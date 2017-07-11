@@ -1,0 +1,40 @@
+apply plugin: 'kotlin'
+
+buildscript {
+    ext.kotlin_version = '1.1.3-2'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+subprojects {
+    apply plugin: 'kotlin'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    }
+}
+
+project(':api') {
+    dependencies {
+        compile 'net.sourceforge.htmlunit:htmlunit:2.27'
+        compile 'org.slf4j:slf4j-api:1.7.25'
+        compile 'ch.qos.logback:logback-core:1.2.3'
+        compile 'com.google.code.gson:gson:2.8.1'
+    }
+}
+
+project(':cli') {
+    dependencies {
+        compile project(':api')
+        compile 'ch.qos.logback:logback-classic:1.2.3'
+    }
+}
