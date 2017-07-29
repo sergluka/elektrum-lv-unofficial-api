@@ -1,0 +1,23 @@
+version: '2.1'
+
+services:
+  influxdb:
+    image: tutum/influxdb:latest
+    container_name: influxdb
+    ports:
+     - "8083:8083"
+     - "8086:8086"
+    volumes:
+     - "/var/influxdb:/data"
+
+  grafana:
+    build:
+      context: grafana
+    environment:
+      - GRAFANA_USER=admin
+      - GRAFANA_PASS=admin
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    links:
+      - influxdb

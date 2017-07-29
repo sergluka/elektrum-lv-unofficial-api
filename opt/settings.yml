@@ -1,0 +1,12 @@
+elektrum:
+  login: user
+  password:
+    encrypted: ''
+    plain: 'password'
+influxdb:
+  database: elektrum
+  login: root
+  password:
+    encrypted: ''
+    plain: 'password'
+  url: http://192.168.99.100:8086

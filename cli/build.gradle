@@ -1,0 +1,53 @@
+apply plugin: 'application'
+
+mainClassName = 'MainKt'
+
+sourceSets {
+    integrationTest {
+        kotlin {
+            srcDir file('src/integration-test/kotlin')
+        }
+        resources {
+            srcDir file('src/integration-test/resources')
+            include 'settings-test.yaml'
+        }
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+dependencies {
+    compile project(':api')
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'com.github.rvesse:airline:2.3.0'
+    compile 'org.yaml:snakeyaml:1.18'
+    compile 'org.influxdb:influxdb-java:2.7'
+    compile 'com.github.oshi:oshi-core:3.4.3'
+}
+
+jar {
+    baseName = 'elektrum-fetcher'
+    version = '0.0.1-SNAPSHOT'
+
+    manifest {
+        attributes "Main-Class": "MainKt",
+                   "Class-Path": configurations.compile.collect { it.getName() }.join(' ')
+
+    }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+task integrationTest(type: Test) {
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
