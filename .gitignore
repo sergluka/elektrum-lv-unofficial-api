@@ -1,8 +1,11 @@
 .*
 *.iml 
+*.log
+*.csv
 
 /gradle/
 /gradlew.bat
 /gradlew
 
 build/
+out/

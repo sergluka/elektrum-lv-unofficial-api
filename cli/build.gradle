@@ -32,7 +32,6 @@ dependencies {
 
 jar {
     baseName = 'elektrum-fetcher'
-    version = '0.0.1-SNAPSHOT'
 
     manifest {
         attributes "Main-Class": "MainKt",
