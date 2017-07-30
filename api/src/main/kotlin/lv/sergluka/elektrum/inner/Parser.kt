@@ -20,7 +20,7 @@ class Parser {
             val jsonObject = JsonParser().parse(content).asJsonObject
             val dataRef = jsonObject.get("data")
 
-            if (dataRef.isJsonArray && dataRef.asJsonArray.size() == 0) {
+            if (dataRef == null || (dataRef.isJsonArray && dataRef.asJsonArray.size() == 0)) {
                 log.debug("No data")
                 return mapOf()
             }
