@@ -1,5 +1,7 @@
 jar {
     baseName = 'elektrum-api'
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
 dependencies {

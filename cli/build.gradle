@@ -7,10 +7,6 @@ sourceSets {
         kotlin {
             srcDir file('src/integration-test/kotlin')
         }
-        resources {
-            srcDir file('src/integration-test/resources')
-            include 'settings-test.yaml'
-        }
         compileClasspath += main.output + test.output
         runtimeClasspath += main.output + test.output
     }

@@ -41,16 +41,16 @@ internal class SettingsTest {
                |    encrypted: none
                """.trimMargin()
 
-        doReturn(yaml).`when`(settings).read("test.yaml")
+        doReturn(yaml).`when`(settings).read("test.yml")
 
-        settings.get("test.yaml") {
+        settings.get("test.yml") {
             assertEquals("login", it.elektrum.login)
             assertEquals("pass", it.elektrum.password.plain)
             assertFalse(it.elektrum.password.encrypted.isEmpty())
         }
 
         val captor = argumentCaptor<Settings.Data>()
-        verify(settings).write(eq("test.yaml"), captor.capture())
+        verify(settings).write(eq("test.yml"), captor.capture())
 
         assertTrue(captor.firstValue.elektrum.password.plain.isEmpty())
         assertFalse(captor.firstValue.elektrum.password.encrypted.isEmpty())

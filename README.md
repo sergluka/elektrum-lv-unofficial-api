@@ -23,10 +23,8 @@ that source data on a site has been refreshed with delay by at least one day.
 
 You can just export data into CSV file in format `date;kWh`
 
-## Library:
+## Library usage:
 
-Latest release: TODO
-    
     val period = Period.DAY 
     val from = LocalDate.of(2016, 1, 1)
     val to = LocalDate.now()
@@ -41,9 +39,9 @@ Latest release: TODO
     }
 
 
-## Application:
-- Download 'TODO.jar'
-- Place 'settings.yml' near the jar file.
+## Application usage:
+- Download latest 'elektrum-fetcher-xx.jar'
+- Place ['settings.yml'](/opt/settings.yml) near the jar file.
 - Set your credential for elektrum.lv site.
 - If you plan to use export into InfluxDB, setup respective section settings. For export into CSV, it's not necessary.
 
