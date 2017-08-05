@@ -19,7 +19,7 @@ that source data on a site has been refreshed with delay in one, two days.
 
 ![Grafana screenshot](/doc/Capture.png?raw=true)
 
-You can use [docker-compose.yml](\opt\docker\docker-compose.yml) to run InfluxDB and Grafana in containers.
+You can use [docker-compose.yml](/opt/docker/docker-compose.yml) to run InfluxDB and Grafana in containers.
 
 ### CSV
 
