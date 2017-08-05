@@ -2,6 +2,7 @@ package lv.sergluka.elektrum
 
 import lv.sergluka.elektrum.inner.Client
 import lv.sergluka.elektrum.inner.Parser
+import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -10,6 +11,10 @@ import java.time.temporal.ChronoField
 import java.time.temporal.ChronoUnit
 
 class ElektrumFetcher: AutoCloseable {
+
+    companion object {
+        private val log = LoggerFactory.getLogger(Client::class.java)
+    }
 
     private val client = Client()
     private val parser = Parser()
@@ -50,20 +55,24 @@ class ElektrumFetcher: AutoCloseable {
             : Map<LocalDateTime, Double?> {
 
         val ret: MutableMap<LocalDateTime, Double?> = mutableMapOf()
-        var fromStart = from
-        val toEnd = to ?: LocalDate.now().plusDays(1)
-        while (fromStart < toEnd) {
+        var reqStart = from
+        val reqEnd = to ?: LocalDate.now().plusDays(1)
+        while (reqStart < reqEnd) {
 
-            val json = client.fetch(period, fromStart.format(formatterUrl),
-                                    if (useRange) toEnd!!.format(formatterUrl) else null)
+            val json = client.fetch(period, reqStart.format(formatterUrl),
+                                    if (useRange) reqEnd!!.format(formatterUrl) else null)
             val data = parser.parse(json, formatterJson)
 
-            if (!data.isEmpty() && useRange) {
-                fromStart = data.keys.last().toLocalDate()
+            val respEnd = if (!data.isEmpty() && useRange) {
+                data.keys.last().toLocalDate()
             } else {
-                fromStart = fromStart.plus(1, increment)
+                reqStart.plus(1, increment)
             }
+
+            log.info("From $reqStart to $respEnd: ${data.size} points")
             ret.putAll(data)
+
+            reqStart = respEnd
         }
 
         return ret

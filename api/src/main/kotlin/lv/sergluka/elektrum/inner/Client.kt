@@ -94,7 +94,7 @@ class Client: AutoCloseable {
                   "fromDate=$from&" +
                   tillDate +
                   useRange
-        log.info("Get data from '$url'")
+        log.debug("Get data from '$url'")
 
         val page = webClient.getPage<Page>(url)
         if (page !is UnexpectedPage) {

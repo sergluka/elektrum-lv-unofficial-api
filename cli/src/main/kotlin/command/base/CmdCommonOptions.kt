@@ -33,10 +33,6 @@ abstract class CmdCommonOptions {
     @Required
     protected val periodStr: String = ""
 
-    @Option(type = OptionType.COMMAND, name = arrayOf("--info"), description = "Switch log level to INFO")
-    @MutuallyExclusiveWith(tag = "logging")
-    private val info = false
-
     @Option(type = OptionType.COMMAND, name = arrayOf("--debug"), description = "Switch log level to DEBUG")
     @MutuallyExclusiveWith(tag = "logging")
     private val debug = false
@@ -78,10 +74,9 @@ abstract class CmdCommonOptions {
 
     private fun setLogLevel() {
         val level = when {
-            info -> Level.INFO
             debug -> Level.DEBUG
             trace -> Level.TRACE
-            else -> Level.WARN
+            else -> Level.INFO
         }
 
         val root = LoggerFactory.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME)

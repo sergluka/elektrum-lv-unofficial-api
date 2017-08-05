@@ -23,7 +23,8 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 @Command(name = "influxdb", description = "Export into InfluxDB")
-@Examples(examples = arrayOf("influxdb --period day 2017-07-01 2017-08-01", "influxdb --period day --increment"))
+@Examples(examples = arrayOf("influxdb --period day --debug 2017-07-01 2017-08-01",
+                             "influxdb --period day --recent"))
 class CmdExportInfluxDb: CmdCommonOptions(), CommandRunnable {
 
     @Option(type = OptionType.COMMAND, name = arrayOf("-r", "--recent"), description = "Get recent data")
@@ -50,6 +51,8 @@ class CmdExportInfluxDb: CmdCommonOptions(), CommandRunnable {
             val from: LocalDateTime = if (fromStr != null) {
                 LocalDateTime.parse(fromStr, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"))
             } else {
+                log.warn("Incremental mode is on, but table '$periodStr' is empty. " +
+                         "Since we cannot find the start point, importing all from 1 Jan 2016.")
                 LocalDateTime.of(2016, Month.JANUARY, 1, 0, 0)
             }
             export(fetch(settings, from.toLocalDate()))
@@ -69,7 +72,7 @@ class CmdExportInfluxDb: CmdCommonOptions(), CommandRunnable {
                                 .consistency(ConsistencyLevel.ALL)
                                 .build()
 
-        meters.filter { it -> it.value != null }
+        meters.filter { it.value != null }
               .forEach { date, amount ->
             batch.point(
                     Point.measurement(periodStr)
@@ -80,6 +83,7 @@ class CmdExportInfluxDb: CmdCommonOptions(), CommandRunnable {
 
         val count = batch.points.count()
         db.write(batch)
+
         log.info("$count points have been written")
     }
 }

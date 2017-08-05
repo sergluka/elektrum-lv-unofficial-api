@@ -15,13 +15,15 @@ Main idea of this project is to monitor electric meters data,
 add analytics, reports and visualize them. For this purposes very suits
 combination of InfluxDB and Grafana. If you wish, is possible to add alarms into
 Grafana for monitoring your consumption limits. But take into account 
-that source data on a site has been refreshed with delay by at least one day.
+that source data on a site has been refreshed with delay in one, two days.
 
 ![Grafana screenshot](/doc/Capture.png?raw=true)
 
+You can use [docker-compose.yml](\opt\docker\docker-compose.yml) to run InfluxDB and Grafana in containers.
+
 ### CSV
 
-You can just export data into CSV file in format `date;kWh`
+Export data into CSV file in format `yyyy-mm-dd;kWh`
 
 ## Library usage:
 
@@ -38,7 +40,6 @@ You can just export data into CSV file in format `date;kWh`
         println(meters)
     }
 
-
 ## Application usage:
 - Download latest 'elektrum-fetcher-xx.jar'
 - Place ['settings.yml'](/opt/settings.yml) near the jar file.
@@ -46,16 +47,16 @@ You can just export data into CSV file in format `date;kWh`
 - If you plan to use export into InfluxDB, setup respective section settings. For export into CSV, it's not necessary.
 
 ### Command line examples 
- - `java -jar TODO.jar csv --period month -o output.csv --debug 2017-01`
+ - `java -jar elektrum-fetcher-xx.jar csv --period month -o output.csv --debug 2017-01`
  
     Exports data summed by month into CSV file from 1 January 2017 till now
- - `java -jar TODO.jar csv --period day -o output.csv --info 2016 2017`
+ - `java -jar elektrum-fetcher-xx.jar csv --period day -o output.csv 2016 2017`
  
     Exports data summed by day into CSV file from 1 January 2016 till 1 January 2017
- - `java -jar TODO.jar influxdb --period year --info 2016 2017`
+ - `java -jar elektrum-fetcher-xx.jar influxdb --period year 2016 2017`
  
     Exports data into InfluxDB from 1 January 2016 till 1 January 2017
- - `java -jar TODO.jar influxdb --period day --increment`
+ - `java -jar elektrum-fetcher-xx.jar influxdb --period day --recent`
  
-    Exports only recent data into InfluxDB. Note that `--increment` option works with `influxdb` only
+    Exports only recent data into InfluxDB. Note that `--recent` option works with `influxdb` only
  
