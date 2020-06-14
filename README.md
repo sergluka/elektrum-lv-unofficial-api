@@ -1,3 +1,5 @@
+:warning: **No longer supported**
+
 # Library and application to get electric meters measures from 'elektrum.lv' site
 
 Disclaimer: This library and application, have no any connection neither with 'elektrum.lv' site creators nor 'AS Latvenergo'.
